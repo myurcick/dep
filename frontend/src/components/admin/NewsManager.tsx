@@ -91,7 +91,7 @@ const NewsManager: React.FC<NewsManagerProps> = ({ data, loading, fetchData }) =
   const handleDeleteNews = async (id: number) => {
     if (confirm('Ви впевнені, що хочете видалити цю новину?')) {
       try {
-        await axios.delete(``${process.env.REACT_APP_API_URL}/api/news/${id}`, {
+        await axios.delete(`${process.env.REACT_APP_API_URL}/api/news/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
