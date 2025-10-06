@@ -92,7 +92,7 @@ const NewsManager: React.FC<NewsManagerProps> = ({ data, loading, fetchData }) =
     if (confirm('Ви впевнені, що хочете видалити цю новину?')) {
       try {
 <<<<<<< HEAD
-        await axios.delete(``${import.meta.env.VITE_API_URL}/api/news/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/news/${id}`, {
 =======
         await axios.delete(`${process.env.REACT_APP_API_URL}/api/news/${id}`, {
 >>>>>>> d0da626073966725134df0c59bfb6bf591a684ab
