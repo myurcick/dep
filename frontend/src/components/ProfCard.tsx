@@ -50,13 +50,13 @@ const Card: React.FC<CardProps> = ({ union, index }) => {
           <div className="relative flex-shrink-0 w-24 h-24 md:w-[140px] md:h-[140px]">
             <div className="w-full h-full overflow-hidden">
               <img
-                src={union.imageUrl ? `http://localhost:5068${union.imageUrl}` : `http://localhost:5068/uploads/default_profburo_logo.png`}
+                src={union.imageUrl ? `${process.env.REACT_APP_API_URL}${union.imageUrl}` : `${process.env.REACT_APP_API_URL}/uploads/default_profburo_logo.png`}
                 alt={headName}
                 loading="lazy"
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.src = 'http://localhost:5068/uploads/default_profburo_logo.png';
+                  target.src = `${process.env.REACT_APP_API_URL}/uploads/default_profburo_logo.png`;
                 }}
               />
             </div>

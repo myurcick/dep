@@ -33,7 +33,7 @@ const ProfModal: React.FC<ProfModalProps> = ({
   const fetchAvailableHeads = async () => {
     try {
       setLoadingHeads(true);
-      const response = await axios.get('http://localhost:5068/api/team', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/team`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

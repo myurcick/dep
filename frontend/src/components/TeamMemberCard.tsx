@@ -24,7 +24,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member }) => {
           {member.imageUrl ? (
             <div className="w-full h-full p-4">
               <img
-                src={`http://localhost:5068${member.imageUrl}`}
+                src={`${process.env.REACT_APP_API_URL}${member.imageUrl}`}
                 alt={member.name}
                 className="w-full h-full object-cover rounded-md"
                 loading="lazy"

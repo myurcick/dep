@@ -50,7 +50,7 @@ const TeamPage: React.FC = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const membersResponse = await axios.get<TeamMember[]>('http://localhost:5068/api/team');
+        const membersResponse = await axios.get<TeamMember[]>(`${process.env.REACT_APP_API_URL}/api/team`);
         console.log('Team Members:', membersResponse.data);
         
         // Фільтруємо тільки активних і сортуємо по orderInd
@@ -60,7 +60,7 @@ const TeamPage: React.FC = () => {
         
         setTeamMembers(activeMembers);
 
-        const departmentsResponse = await axios.get<Department[]>('http://localhost:5068/api/unit');
+        const departmentsResponse = await axios.get<Department[]>(`${process.env.REACT_APP_API_URL}/api/unit`);
         console.log('Departments:', departmentsResponse.data);
         setDepartments(
           departmentsResponse.data

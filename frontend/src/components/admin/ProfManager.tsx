@@ -65,14 +65,14 @@ const ProfManager: React.FC<ProfManagerProps> = ({ data, loading, fetchData }) =
       if (editingFacultyUnion) {
         // Редагування існуючого профбюро
         await axios.put(
-          `http://localhost:5068/api/prof/${editingFacultyUnion.id}`, 
+          `${process.env.REACT_APP_API_URL}/api/prof/${editingFacultyUnion.id}`, 
           formData, 
           { headers }
         );
       } else {
         // Створення нового профбюро
         await axios.post(
-          'http://localhost:5068/api/prof', 
+          `${process.env.REACT_APP_API_URL}/api/prof`, 
           formData, 
           { headers }
         );
@@ -100,7 +100,7 @@ const ProfManager: React.FC<ProfManagerProps> = ({ data, loading, fetchData }) =
 
     if (confirm(confirmMessage)) {
       try {
-        await axios.delete(`http://localhost:5068/api/prof/${id}`, {
+        await axios.delete(`${process.env.REACT_APP_API_URL}/api/prof/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

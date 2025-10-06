@@ -34,7 +34,7 @@ const NewsPage: React.FC = () => {
 
   const fetchNews = async () => {
     try {
-      const response = await axios.get<News[]>('http://localhost:5068/api/news', {
+      const response = await axios.get<News[]>(`http://localhost:5068/api/news`, {
         params: {
           orderBy: 'publishedAt',
           order: 'desc',
