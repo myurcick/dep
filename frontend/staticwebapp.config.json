@@ -1,0 +1,8 @@
+{
+  "routes": [
+    {
+      "route": "/admin/login",
+      "rewrite": "/index.html"
+    }
+  ]
+}
