@@ -33,7 +33,7 @@ const TeamManager: React.FC<TeamManagerProps> = ({ data, loading, fetchData }) =
       if (selectedFile) {
         const uploadFormData = new FormData();
         uploadFormData.append('file', selectedFile);
-        const uploadRes = await axios.post(`${process.env.REACT_APP_API_URL}/api/uploads`, uploadFormData, {
+        const uploadRes = await axios.post(`${import.meta.env.VITE_API_URL}/api/uploads`, uploadFormData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -62,13 +62,13 @@ const TeamManager: React.FC<TeamManagerProps> = ({ data, loading, fetchData }) =
       };
 
       if (editingTeamMember) {
-        await axios.put(`${process.env.REACT_APP_API_URL}/api/team/${editingTeamMember.id}`, formData, { headers });
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/team/${editingTeamMember.id}`, formData, { headers });
       } else {
         if (teamFormData.orderInd === 0) {
           const maxOrder = Math.max(...data.map(m => m.orderInd), 0);
           formData.set('OrderInd', (maxOrder + 1).toString());
         }
-        await axios.post(`${process.env.REACT_APP_API_URL}/api/team`, formData, { headers });
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/team`, formData, { headers });
       }
 
       await fetchData();
@@ -82,7 +82,7 @@ const TeamManager: React.FC<TeamManagerProps> = ({ data, loading, fetchData }) =
   const handleDeleteTeamMember = async (id: number) => {
     if (confirm('Ви впевнені, що хочете видалити цього члена команди?')) {
       try {
-        await axios.delete(`${process.env.REACT_APP_API_URL}/api/team/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/team/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
