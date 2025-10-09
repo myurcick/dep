@@ -42,7 +42,7 @@ namespace ProfkomBackend.Data
                 new Admin
                 {
                     Username = "marusia@profkom.com",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("@InmovToLove"),
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("@InmovToLove12"),
                     Role = "admin"
                 },
                 new Admin
