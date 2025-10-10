@@ -69,7 +69,7 @@ namespace ProfkomBackend.Data
                     Role = "admin"
                 } new Admin
                 {
-                    Username = "Viknoria@profkom.com",
+                    Username = "Vikntoria@profkom.com",
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("!FUFBtesla3"),
                     Role = "admin"
                 }
