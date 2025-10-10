@@ -57,6 +57,22 @@ namespace ProfkomBackend.Data
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("!Ekonomist19"),
                     Role = "admin"
                 }
+                 new Admin
+                {
+                    Username = "Oleksa@profkom.com",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("@FPMIhead12"),
+                    Role = "admin"
+                } new Admin
+                {
+                    Username = "Yaryna@profkom.com",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("!BoInmovToAmar17"),
+                    Role = "admin"
+                } new Admin
+                {
+                    Username = "Viknoria@profkom.com",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("!FUFBtesla3"),
+                    Role = "admin"
+                }
             };
 
             foreach (var admin in adminsToAdd)
