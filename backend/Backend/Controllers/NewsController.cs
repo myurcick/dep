@@ -14,7 +14,8 @@ namespace ProfkomBackend.Controllers
     [Route("api/[controller]")]
     public class NewsController : ControllerBase
     {
-        private readonly AppDbContext _db; private readonly IWebHostEnvironment _env;
+        private readonly AppDbContext _db; 
+        private readonly IWebHostEnvironment _env;
 
         public NewsController(AppDbContext db, IWebHostEnvironment env)
         {
@@ -52,19 +53,19 @@ namespace ProfkomBackend.Controllers
 
             if (newsDto.Image != null && newsDto.Image.Length > 0)
             {
-                var uploads = Path.Combine(_env.ContentRootPath, "Uploads");
+                var uploads = Path.Combine(_env.ContentRootPath, "uploads", "news");
                 if (!Directory.Exists(uploads))
                 {
                     Directory.CreateDirectory(uploads);
                 }
 
-                var fileName = $"{Guid.NewGuid()}_{Path.GetFileName(newsDto.Image.FileName)}";
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(newsDto.Image.FileName)}";
                 var filePath = Path.Combine(uploads, fileName);
-                using (var stream = System.IO.File.Create(filePath))
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await newsDto.Image.CopyToAsync(stream);
                 }
-                news.ImageUrl = $"/Uploads/{fileName}"; // «·Â≥„‡∫ÏÓ ‚≥‰ÌÓÒÌËÈ ¯Îˇı Û ¡ƒ
+                news.ImageUrl = $"/uploads/news/{fileName}";
             }
 
             _db.News.Add(news);
@@ -76,11 +77,6 @@ namespace ProfkomBackend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromForm] NewsDto newsDto)
         {
-            if (id != newsDto.Id)
-            {
-                return BadRequest("ID ‚ URL ÌÂ ‚≥‰ÔÓ‚≥‰‡∫ ID Û ‰‡ÌËı");
-            }
-
             var existingNews = await _db.News.FindAsync(id);
             if (existingNews == null)
             {
@@ -93,22 +89,32 @@ namespace ProfkomBackend.Controllers
 
             if (newsDto.Image != null && newsDto.Image.Length > 0)
             {
-                var uploads = Path.Combine(_env.ContentRootPath, "Uploads");
+                // –í–∏–¥–∞–ª–µ–Ω–Ω—è —Å—Ç–∞—Ä–æ–≥–æ –∑–æ–±—Ä–∞–∂–µ–Ω–Ω—è, —è–∫—â–æ –≤–æ–Ω–æ —î
+                if (!string.IsNullOrEmpty(existingNews.ImageUrl))
+                {
+                    var oldPath = Path.Combine(_env.ContentRootPath, existingNews.ImageUrl.TrimStart('/'));
+                    if (System.IO.File.Exists(oldPath))
+                    {
+                        System.IO.File.Delete(oldPath);
+                    }
+                }
+
+                // –ó–±–µ—Ä–µ–∂–µ–Ω–Ω—è –Ω–æ–≤–æ–≥–æ –∑–æ–±—Ä–∞–∂–µ–Ω–Ω—è
+                var uploads = Path.Combine(_env.ContentRootPath, "uploads", "news");
                 if (!Directory.Exists(uploads))
                 {
                     Directory.CreateDirectory(uploads);
                 }
-
-                var fileName = $"{Guid.NewGuid()}_{Path.GetFileName(newsDto.Image.FileName)}";
+                
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(newsDto.Image.FileName)}";
                 var filePath = Path.Combine(uploads, fileName);
-                using (var stream = System.IO.File.Create(filePath))
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await newsDto.Image.CopyToAsync(stream);
                 }
-                existingNews.ImageUrl = $"/Uploads/{fileName}"; // ŒÌÓ‚Î˛∫ÏÓ ¯Îˇı Û ¡ƒ
+                existingNews.ImageUrl = $"/uploads/news/{fileName}";
             }
 
-            _db.Entry(existingNews).State = EntityState.Modified;
             await _db.SaveChangesAsync();
             return NoContent();
         }
@@ -122,6 +128,16 @@ namespace ProfkomBackend.Controllers
             {
                 return NotFound();
             }
+            
+            // –í–∏–¥–∞–ª–µ–Ω–Ω—è –∑–æ–±—Ä–∞–∂–µ–Ω–Ω—è, —è–∫—â–æ –≤–æ–Ω–æ —î
+            if (!string.IsNullOrEmpty(news.ImageUrl))
+            {
+                var filePath = Path.Combine(_env.ContentRootPath, news.ImageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
 
             _db.News.Remove(news);
             await _db.SaveChangesAsync();
@@ -131,12 +147,10 @@ namespace ProfkomBackend.Controllers
 
     public class NewsDto
     {
-        public int Id { get; set; }
         [Required]
         public string Title { get; set; } = string.Empty;
         public string? Content { get; set; }
         public IFormFile? Image { get; set; }
         public bool IsImportant { get; set; }
     }
-
 }

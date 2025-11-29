@@ -9,7 +9,7 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // === Абсолютний шлях до wwwroot/uploads ===
-var uploadPath = "/home/site/wwwroot/uploads";
+var uploadPath = Path.Combine(builder.Environment.ContentRootPath, "uploads");
 Directory.CreateDirectory(uploadPath);
 
 // === Services ===
@@ -54,7 +54,8 @@ builder.Services.AddSwaggerGen(c =>
 
 // === EF Core ===
 var conn = builder.Configuration.GetConnectionString("DefaultConnection") ??
-           "Server=profkomlnu-server.mysql.database.azure.com;port=3306;database=profkomdb;username=seavotgupm;password=DBkN9Ww8Lra$jKjC;";
+           "Server=localhost;port=3306;database=profkomdb;username=root;password=root;";
+           /*"Server=profkomlnu-server.mysql.database.azure.com;port=3306;database=profkomdb;username=seavotgupm;password=DBkN9Ww8Lra$jKjC;";*/
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(conn, ServerVersion.AutoDetect(conn))
@@ -135,7 +136,7 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     try
     {
-        db.Database.EnsureCreated();
+        db.Database.Migrate();
         DbInitializer.Seed(db);
         Console.WriteLine("? Database initialized successfully");
     }
